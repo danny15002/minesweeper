@@ -22,10 +22,16 @@ class Tile
     end
 
     neighbors
-    @neighbors.each do |neighbor| #neighbor is tile object
-      neighbor.reveal unless (neighbor_bomb_count > 0)
+    unless (neighbor_bomb_count > 0)
+      @neighbors.each do |neighbor| #neighbor is tile object
+        neighbor.reveal
+      end
     end
 
+    if neighbor_bomb_count > 0
+      @state = @bomb_count
+    end
+    @bomb_count
   end
 
   def neighbors
@@ -34,9 +40,8 @@ class Tile
       -1.upto(1) do |j|
         check_row = @row + i
         check_col = @col + j
-        check_tile = @board.grid[check_row][check_col]
-        puts check_tile
-        if check_row > 0 && check_col > 0
+        if (check_row >= 0 && check_col >= 0) && (check_row < @board.grid.length && check_col < @board.grid[0].length)
+          check_tile = @board.grid[check_row][check_col]
           @neighbors << check_tile unless check_tile.revealed #neighboring tiles get placed into @neighbors
         end
       end
@@ -45,9 +50,9 @@ class Tile
   end
 
   def neighbor_bomb_count
-    bomb_count = 0
-    @neighbors.each {|neigh_tile| bomb_count += 1 if neigh_tile.bombed}
-    bomb_count
+    @bomb_count = 0
+    @neighbors.each {|neigh_tile| @bomb_count += 1 if neigh_tile.bombed}# increases bomb count every time it find a neighboring bomb
+    @bomb_count
   end
 
   def inspect
