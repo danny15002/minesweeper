@@ -12,7 +12,12 @@ class Tile
     @col = coordinates[1]
   end
 
-  def reveal
+  def reveal(flag = nil)
+    if flag == "F"
+      @state = "F"
+      return ""
+    end
+
     @revealed = true
     if @bombed
       @state = "B"
@@ -31,7 +36,6 @@ class Tile
     if neighbor_bomb_count > 0
       @state = @bomb_count
     end
-    @bomb_count
   end
 
   def neighbors
@@ -46,7 +50,6 @@ class Tile
         end
       end
     end
-
   end
 
   def neighbor_bomb_count
@@ -58,6 +61,4 @@ class Tile
   def inspect
 
   end
-
-
 end

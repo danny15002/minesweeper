@@ -1,7 +1,6 @@
 require_relative 'tile'
 
 class Board
-
   attr_reader :grid, :bomb_count
 
   def initialize(grid = Array.new(9) {Array.new(9)}, bomb_count = 10)
@@ -9,7 +8,6 @@ class Board
     @bomb_count = bomb_count
     populate_grid
     seed_bombs
-    render
   end
 
   def populate_grid
@@ -42,11 +40,11 @@ class Board
     end
   end
 
-  def make_move(pos)
+  def make_move(flag = nil, pos)
     row = pos[0] - 1
     col = pos[1] - 1
 
-    @grid[row][col].reveal
+    @grid[row][col].reveal(flag)
   end
 end
 
