@@ -2,11 +2,14 @@ require_relative 'tile'
 
 class Board
 
-  attr_reader :grid
+  attr_reader :grid, :bomb_count
 
-  def initialize(grid = Array.new(9) {Array.new(9)})
+  def initialize(grid = Array.new(9) {Array.new(9)}, bomb_count = 10)
     @grid = grid
-
+    @bomb_count = bomb_count
+    populate_grid
+    seed_bombs
+    render
   end
 
   def populate_grid
@@ -18,14 +21,14 @@ class Board
   end
 
   def seed_bombs
-    bomb_count = 0
+    bombs_placed = 0
 
-    until bomb_count == 10
+    until bombs_placed == @bomb_count
       row = rand(@grid.length-1)
       col = rand(@grid[0].length-1)
       if !@grid[row][col].bombed
         @grid[row][col].bombed = true
-        bomb_count += 1
+        bombs_placed += 1
       end
     end
   end
@@ -47,10 +50,8 @@ class Board
   end
 end
 
-board = Board.new
-board.populate_grid
-board.render
-board.seed_bombs
-board.make_move([3,3])
-system 'clear'
-board.render
+# board = Board.new
+# board.render
+# board.make_move([3,3])
+# system 'clear'
+# board.render

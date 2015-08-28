@@ -16,7 +16,7 @@ class Tile
     @revealed = true
     if @bombed
       @state = "B"
-      return ""
+      return false
     else
       @state = " "
     end
@@ -35,12 +35,13 @@ class Tile
         check_row = @row + i
         check_col = @col + j
         check_tile = @board.grid[check_row][check_col]
+        puts check_tile
         if check_row > 0 && check_col > 0
           @neighbors << check_tile unless check_tile.revealed #neighboring tiles get placed into @neighbors
         end
       end
     end
-    puts @neighbors.to_s
+
   end
 
   def neighbor_bomb_count
